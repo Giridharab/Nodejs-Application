@@ -1,0 +1,19 @@
+# configure.yml
+- name: Configure Node.js application
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Run Node.js Application Container
+      docker_container:
+        name: node-app
+        image: node-app:latest
+        state: started
+        ports:
+          - "3000:3000"
+
