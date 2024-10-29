@@ -16,6 +16,11 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Build Packages') {
+            steps {
+                sh 'npm build'
+            }
+        }
 
         stage('Run Tests') {
             steps {
