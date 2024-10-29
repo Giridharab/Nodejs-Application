@@ -2,11 +2,10 @@ pipeline {
     agent any
 
     environment {
-        REGISTRY = 'your-docker-registry'
+        REGISTRY = 'girib1608'
         APP_IMAGE = "${REGISTRY}/node-app:latest"
-        SSH_CREDENTIALS_ID = 'ansible-ssh' // replace with Jenkins credentials ID
     }
-
+    timestamps {
     stages {
         stage('Checkout') {
             steps {
@@ -34,8 +33,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+               withDockerRegistry(credentialsId: 'dockerhub-cred') {
                     sh 'docker push $APP_IMAGE'
                 }
             }
@@ -50,19 +48,17 @@ pipeline {
             }
         }
 
-        stage('Run Ansible Playbook') {
-            steps {
-                sshagent(credentials: [SSH_CREDENTIALS_ID]) {
-                    sh 'ansible-playbook -i inventory configure.yml'
-                }
-            }
-        }
-
         stage('Deploy to Kubernetes') {
             steps {
                 kubernetesDeploy(configs: 'k8s-deployment.yaml', kubeconfigId: 'kube-config')
             }
         }
+        post {
+        always {
+            cleanWs()
+        }
     }
+    }
+}
 }
 
