@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         REGISTRY = 'girib1608'
-        APP_IMAGE = "${REGISTRY}/node-app:latest"
+        APP_IMAGE = "${REGISTRY}/node-app"
     }
     
     stages {
