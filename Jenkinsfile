@@ -41,12 +41,10 @@ pipeline {
 
         stage('Apply Terraform') {
             steps {
-                dir('terraform') {
                     sh 'terraform init'
                     sh 'terraform apply -auto-approve'
                 }
             }
-        }
 
         stage('Deploy to Kubernetes') {
             steps {
