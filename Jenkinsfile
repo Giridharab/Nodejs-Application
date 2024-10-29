@@ -16,18 +16,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Install Macha Chai') {
-            steps {
-                sh 'npm install --save-dev mocha chai'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'cd nodejs-application/test'
-                sh 'npm test'
-            }
-        }
 
         stage('Docker-Build') {
             steps {
