@@ -16,9 +16,9 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build Packages') {
+        stage('Install Macha Chai') {
             steps {
-                sh 'npm build'
+                sh 'npm install --save-dev mocha chai'
             }
         }
 
