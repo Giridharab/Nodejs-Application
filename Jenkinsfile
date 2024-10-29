@@ -5,7 +5,7 @@ pipeline {
         REGISTRY = 'girib1608'
         APP_IMAGE = "${REGISTRY}/node-app:latest"
     }
-    timestamps {
+    
     stages {
         stage('Checkout') {
             steps {
@@ -60,5 +60,5 @@ pipeline {
     }
     }
 }
-}
+
 
