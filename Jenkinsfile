@@ -24,6 +24,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
+                sh 'cd nodejs-application/test'
                 sh 'npm test'
             }
         }
