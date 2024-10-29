@@ -29,10 +29,13 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-           steps {
-               withDockerRegistry(credentialsId: 'dockerhub-cred') {
-                    sh 'docker push $APP_IMAGE:${params.DOCKER_IMAGETAG} .'
+        stage('Docker-Build') {
+            steps {
+                script{
+                    // This step should not normally be used in your script. Consult the inline help for details.
+                    withDockerRegistry(credentialsId: 'dockerhub-cred') {
+                    sh "docker build -t $APP_IMAGE:${params.DOCKER_IMAGETAG} ."
+                    }
                 }
             }
         }
