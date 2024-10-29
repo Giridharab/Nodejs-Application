@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'DOCKER_IMAGETAG', defaultValue: 'latest', description: 'Docker ImageTag')
+    }
+
     environment {
         REGISTRY = 'girib1608'
         APP_IMAGE = "${REGISTRY}/node-app:latest"
@@ -26,15 +30,20 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t $APP_IMAGE .'
+           steps {
+               withDockerRegistry(credentialsId: 'dockerhub-cred') {
+                    sh 'docker push $APP_IMAGE:${params.DOCKER_IMAGETAG} .'
+                }
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Docker-Push') {
             steps {
-               withDockerRegistry(credentialsId: 'dockerhub-cred') {
-                    sh 'docker push $APP_IMAGE'
+                script{
+                    // This step should not normally be used in your script. Consult the inline help for details.
+                    withDockerRegistry(credentialsId: 'dockerhub-cred') {
+                    sh "docker push $APP_IMAGE:${params.DOCKER_IMAGETAG}"
+                    }
                 }
             }
         }
