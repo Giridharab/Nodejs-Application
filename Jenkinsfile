@@ -17,12 +17,6 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                sh 'sudo apt install npm'
-            }
-        }
-
         stage('Run Tests') {
             steps {
                 sh 'npm test'
