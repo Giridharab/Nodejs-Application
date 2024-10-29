@@ -65,11 +65,11 @@ pipeline {
                 kubernetesDeploy(configs: 'k8s-deployment.yaml', kubeconfigId: 'kube-config')
             }
         }
-        post {
-        always {
-            cleanWs()
+       stage('Clear Workspace') {
+            steps {
+                cleanWs() //clear the workspace
+            }
         }
-    }
     }
 }
 
